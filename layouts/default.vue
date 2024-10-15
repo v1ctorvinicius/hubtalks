@@ -1,12 +1,12 @@
 <template>
+  <div class="message-container">
+    <AuthMessage />
+  </div>
   <div class="vintage">
     <div class="nav-container">
       <Nav />
     </div>
     <div class="main-container center ">
-      <div class="message-container">
-        <AuthMessage />
-      </div>
       <div class="center">
         <NuxtRouteAnnouncer />
         <NuxtPage />
