@@ -1,0 +1,113 @@
+* {
+  font-family: "Courier New", Courier, monospace;
+  margin: 0;
+}
+
+/* html {
+	background: linear-gradient(97deg, #366455 20%, #6F8061 20%, #DE9753 50%, #C5511C 50%, #8C2534 75%); 
+} */
+
+.text-white {
+  color: white;
+}
+
+.vintage {
+  /* background: rgb(25, 56, 66); */
+  background: linear-gradient(
+    97deg,
+    #366455 20%,
+    #6f8061 20%,
+    #de9753 50%,
+    #c5511c 50%,
+    #8c2534 75%
+  );
+}
+
+.tomato {
+  background-color: tomato;
+}
+
+.blue-whale {
+  background-color: #193842;
+}
+
+.blue-whale-alpha {
+  background-color: rgba(9, 36, 43, 0.7);
+}
+
+.spectra {
+  background-color: #366455;
+}
+
+.willow-grove {
+  background-color: #6f8061;
+}
+
+.porsche {
+  background-color: #de9753;
+}
+
+.trinidad {
+  background-color: #c5511c;
+}
+
+.shiraz {
+  background-color: #8c2534;
+}
+
+.cyan {
+  background-color: #2ff3e0;
+}
+
+.gold {
+  background-color: #f8d210;
+}
+
+.pink {
+  background-color: #fa26a0;
+}
+
+.chilli {
+  background-color: #f51720;
+}
+
+.brown {
+  background-color: #756147;
+}
+
+.margin-5 {
+  margin: 0 5vw 2vw 5vw;
+}
+
+.padding-3 {
+  padding: 3vw;
+}
+
+.hide {
+  display: none;
+}
+
+.center {
+  /* width: 7vh; */
+  /* height: 10vh; */
+  display: flex;
+  justify-content: center;
+}
+/* "I'd recommend taking after Twitter's Bootstrap with just these four media queries" (https://stackoverflow.com/questions/12045893/which-are-the-most-important-media-queries-to-use-in-creating-mobile-responsive) */
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+  
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+}
