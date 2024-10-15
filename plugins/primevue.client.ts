@@ -5,6 +5,8 @@ import Button from "primevue/button";
 import Message from "primevue/message";
 import Menubar from "primevue/menubar";
 import InputText from "primevue/inputtext";
+import Checkbox from "primevue/checkbox";
+import FloatLabel from "primevue/floatlabel";
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue);
@@ -12,4 +14,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Message", Message);
   nuxtApp.vueApp.component("Menubar", Menubar);
   nuxtApp.vueApp.component("InputText", InputText);
+  nuxtApp.vueApp.component("Checkbox", Checkbox);
+  nuxtApp.vueApp.component("FloatLabel", FloatLabel);
+  
 });

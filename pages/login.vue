@@ -3,12 +3,13 @@
 const config = useRuntimeConfig();
 const googleClientId = config.public.googleClientId;
 const redirectUri = config.public.redirectUri;
+const checked = ref(false);
 
 function googleOauthSignIn() {
   var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
   var form = document.createElement('form');
-  form.setAttribute('method', 'GET'); // Send as a GET request.
+  form.setAttribute('method', 'GET');
   form.setAttribute('action', oauth2Endpoint);
 
   var params = {
@@ -36,8 +37,8 @@ function googleOauthSignIn() {
 
 <template>
   <div class="main-container">
-    <section class="container blue-whale-alpha text-white" style="text-align: center;">
-      <div class="providers" style=" display: flex; flex-direction: column;  gap: 2vh; margin: 2vh 0 2vh 0 ">
+    <section class="container blue-whale-alpha text-white" style="text-align: center; padding: 20vh 30vw;">
+      <div class="providers" style=" display: flex; flex-direction: column;  gap: 2vh; margin-bottom: 2vh;">
 
         <Button @click="googleOauthSignIn" label="Enter with Google" icon="pi pi-google"
           :pt:icon:style="'font-size: 1.5vw'" />
@@ -49,7 +50,15 @@ function googleOauthSignIn() {
       <p>or</p>
       <InputText type="email" placeholder="Email" style="width: 100%; margin-top: 2vh;" />
       <InputText type="password" placeholder="Password" style="width: 100%; margin-top: 2vh;" />
-      <Button @click="" label="Enter" style="width: 100%; margin-top: 2vh;" />
+      <div
+        style="display: flex; flex-direction: row;  justify-content: space-between; align-items: center; padding: 2vh 0;">
+        <div style="display: flex; gap: 0.5vw; ">
+          <Checkbox v-model="checked" :invalid="false" binary itemid="remember"/>
+          <label for="remember">Remember me</label>
+        </div>
+        <a href="">Reset password</a>
+      </div>
+      <Button @click="" label="Enter" style="width: 100%;" />
     </section>
   </div>
 </template>
@@ -69,7 +78,7 @@ function googleOauthSignIn() {
     padding: 2%;
     margin: auto;
     width: 100%;
-    border-radius: 8px;
+    border-radius: 10px;
   }
 }
 </style>
