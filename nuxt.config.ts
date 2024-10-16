@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     public: {
       googleClientId: process.env.GOOGLE_CLIENT_ID,
       redirectUri: process.env.REDIRECT_URI,
+      apiBaseUrl: process.env.API_BASE_URL,
     },
   },
   hooks: {
