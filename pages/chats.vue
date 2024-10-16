@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { useUserStore } from "#imports";
+import { useUserStore } from "~/stores/UserStore";
 import { useChatStore } from "~/stores/ChatStore";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
@@ -12,9 +12,12 @@ import type Chat from "~/types/chat";
 
 import io from "socket.io-client";
 
-const toastSuccess = useToast();
-const toastError = useToast();
-const toastErrorNameTooLarge = useToast();
+// const toastSuccess = useToast();
+const toastSuccess = usePVToastService();
+// const toastError = useToast();
+const toastError = usePVToastService();
+// const toastErrorNameTooLarge = useToast();
+const toastErrorNameTooLarge = usePVToastService();
 
 const userStore = useUserStore();
 const chatStore = useChatStore();
@@ -26,16 +29,25 @@ const newChatPassword = ref("");
 const createChatLoading = ref(false);
 const isCreateChatModalVisible = ref(false);
 
-//TODO: esses computeds nao ajudam muito
+//TODO: this works?
 const isNewChatPasswordInvalid = computed(() => newChatPassword.value.length > 50);
 const isNewChatNameInvalid = computed(() => newChatName.value.length > 50);
 
-const apiBaseUrl: string = import.meta.env.VITE_API_BASE_URL;
+const config = useRuntimeConfig();
+const apiBaseUrl = config.public.apiBaseUrl;
 const baseUrl: string = import.meta.env.VITE_BASE_URL;
 
-//TODO: cachear a lista de chats
+//TODO: cache
 onMounted(() => {
   // chatStore.updateChats();
+  document.addEventListener("keydown", (event) => {
+    handleKeyboardKeydown(event);
+  });
+
+  console.log('toastError', toastError);
+  console.log('apiBaseUrl', apiBaseUrl);
+
+
 })
 
 const createChat = async () => {
@@ -67,7 +79,7 @@ const createChat = async () => {
     console.error(error);
     createChatLoading.value = false;
     showErrorToast(error as string);
-  } 
+  }
 };
 
 const showSuccessToast = () => {
@@ -103,13 +115,9 @@ function modalCreateChatCloseButtonHandler() {
   newChatName.value = "";
 }
 
-document.addEventListener("keydown", (event) => {
-  handleKeyboardKeydown(event);
-});
-
 const showSearchInput = () => { }
 
-//TODO: change socket logic to use pinia, or try
+//TODO: use pinia?
 const socket = io(baseUrl);
 socket.on("chatCreated", (data) => {
   chatStore.chats.push(data);
@@ -133,12 +141,7 @@ const login = () => {
 </script>
 
 <template>
-  <div class="message-container">
-    <Message class="message" v-if="!userStore.isAuthenticated" severity="info"
-      :pt:text:style="'padding: 0 1vw ; display: flex; align-items: center'"> Now authenticated as guest
-      <Button @click="login" label="login" style="margin-left: 10px" />
-    </Message>
-  </div>
+
   <div class="container text-white">
     <section class="chat-cards-section blue-whale-alpha" :class="{ 'empty': chatStore.chats.length == 0 }">
       <div v-if="chatStore.chats.length == 0">
@@ -217,27 +220,20 @@ a {
   overflow-y: scroll;
 } */
 
-.message-container {
-  position: absolute;
-  right: 0;
-  margin: 1vh;
-}
-
 @media (min-width: 1200px) {
 
   .container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 10vh 5vw;
-    min-height: 88vh;
+    width: 80vw;
+    height: 70vh;
   }
 
   .chat-cards-section {
-
     border-radius: 10px;
     padding: 2%;
-    margin: 0 2%;
+    /* margin: 0 2%; */
     flex-grow: 2;
     display: flex;
     flex-direction: column;

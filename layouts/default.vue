@@ -6,8 +6,8 @@
     <div class="nav-container">
       <Nav />
     </div>
-    <div class="main-container center ">
-      <div class="center">
+    <div class="main-container  ">
+      <div>
         <NuxtRouteAnnouncer />
         <NuxtPage />
       </div>
@@ -46,18 +46,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 1px solid red;
   }
 
   .footer-container {
     padding: 1vh;
   }
-
-  .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
 
 }
 
