@@ -12,17 +12,11 @@ import type Chat from "~/types/chat";
 
 import io from "socket.io-client";
 
-// const toastSuccess = useToast();
-const toastSuccess = usePVToastService();
-// const toastError = useToast();
-const toastError = usePVToastService();
-// const toastErrorNameTooLarge = useToast();
-const toastErrorNameTooLarge = usePVToastService();
 
-const userStore = useUserStore();
-const chatStore = useChatStore();
 
 const router = useRouter();
+const userStore = useUserStore();
+const chatStore = useChatStore();
 
 const newChatName = ref("");
 const newChatPassword = ref("");
@@ -37,16 +31,20 @@ const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl;
 const baseUrl: string = import.meta.env.VITE_BASE_URL;
 
+const toastSuccess = ref();
+const toastError = ref();
+const toastErrorNameTooLarge = ref();
+
 //TODO: cache
 onMounted(() => {
   // chatStore.updateChats();
+  toastSuccess.value = useToast();
+  toastError.value = useToast();
+  toastErrorNameTooLarge.value = useToast();
+
   document.addEventListener("keydown", (event) => {
     handleKeyboardKeydown(event);
   });
-
-  console.log('toastError', toastError);
-  console.log('apiBaseUrl', apiBaseUrl);
-
 
 })
 
@@ -54,7 +52,7 @@ const createChat = async () => {
   createChatLoading.value = true;
 
   if (newChatName.value.length > 50) {
-    toastErrorNameTooLarge.add({ severity: 'error', summary: 'Error', life: 0, detail: 'Chat name cannot be longer than 50 characters, got:  ' + newChatName.value.length });
+    toastErrorNameTooLarge.value.add({ severity: 'error', summary: 'Error', life: 0, detail: 'Chat name cannot be longer than 50 characters, got:  ' + newChatName.value.length });
     createChatLoading.value = false;
     return;
   }
@@ -83,11 +81,11 @@ const createChat = async () => {
 };
 
 const showSuccessToast = () => {
-  toastSuccess.add({ severity: 'success', summary: 'Chat Created', life: 5000 });
+  toastSuccess.value.add({ severity: 'success', summary: 'Chat Created', life: 5000 });
 };
 
 const showErrorToast = (message: string) => {
-  toastError.add({ severity: 'error', summary: 'Error', life: 0, detail: message });
+  toastError.value.add({ severity: 'error', summary: 'Error', life: 0, detail: message });
 };
 
 function changeCreateChatModalVisibility(value?: boolean) {
@@ -96,7 +94,6 @@ function changeCreateChatModalVisibility(value?: boolean) {
     return;
   }
   isCreateChatModalVisible.value = value!;
-
 }
 
 function handleKeyboardKeydown(event: KeyboardEvent) {
@@ -192,6 +189,7 @@ const login = () => {
     :chat="chat" :socket="socket" @click="console.log('oi')" />
 
   <Toast position="bottom-left" />
+
 </template>
 
 <style scoped>

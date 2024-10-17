@@ -6,13 +6,13 @@ const redirectUri = config.public.redirectUri;
 const checked = ref(false);
 
 function googleOauthSignIn() {
-  var oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+  let oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
 
-  var form = document.createElement('form');
+  let form = document.createElement('form');
   form.setAttribute('method', 'GET');
   form.setAttribute('action', oauth2Endpoint);
 
-  var params = {
+  let params = {
     'client_id': `${googleClientId}`,
     'redirect_uri': `${redirectUri}`,
     'response_type': 'token',
@@ -21,8 +21,8 @@ function googleOauthSignIn() {
     'state': 'pass-through value'
   };
 
-  for (var p in params) {
-    var input = document.createElement('input');
+  for (let p in params) {
+    let input = document.createElement('input');
     input.setAttribute('type', 'hidden');
     input.setAttribute('name', p);
     //@ts-ignore
@@ -53,7 +53,7 @@ function googleOauthSignIn() {
       <div
         style="display: flex; flex-direction: row;  justify-content: space-between; align-items: center; padding: 2vh 0;">
         <div style="display: flex; gap: 0.5vw; ">
-          <Checkbox v-model="checked" :invalid="false" binary itemid="remember"/>
+          <Checkbox v-model="checked" :invalid="false" binary itemid="remember" />
           <label for="remember">Remember me</label>
         </div>
         <a href="">Reset password</a>
