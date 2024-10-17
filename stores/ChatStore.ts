@@ -1,11 +1,9 @@
 import type Chat from "~/types/chat";
 import { defineStore } from "pinia";
-import { useRuntimeConfig } from "~/plugins/runtime-config";
-
-const config = useRuntimeConfig();
-const apiBaseUrl = config.public.apiBaseUrl;
 
 export const useChatStore = defineStore("chatStore", () => {
+  const config = useRuntimeConfig();
+  const apiBaseUrl = config.public.googleClientId;
   const chats = ref<Chat[]>([]);
   const openChats = ref<Chat[]>([]);
 
@@ -18,8 +16,6 @@ export const useChatStore = defineStore("chatStore", () => {
       const newChats = getAllChatsResponse.filter((chat) => {
         return !currentChats.some((currentChat) => currentChat.id === chat.id);
       });
-
-      // console.log("newChats: ", newChats);
 
       if (newChats.length > 0) {
         chats.value.push(...newChats);
