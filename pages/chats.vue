@@ -29,7 +29,7 @@ const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl;
 const baseUrl: string = import.meta.env.VITE_BASE_URL;
 
-const toastSuccess = ref();
+const toastS34uccess = ref();
 const toastError = ref();
 const toastErrorNameTooLarge = ref();
 
@@ -37,7 +37,8 @@ const toastErrorNameTooLarge = ref();
 onMounted(() => {
   chatStore.updateChats();
   toastSuccess.value = useToast();
-  toastError.value = useToast();
+  toastError.value = useToast();234
+  
   toastErrorNameTooLarge.value = useToast();
 
   document.addEventListener("keydown", (event) => {
@@ -136,7 +137,6 @@ const login = () => {
 </script>
 
 <template>
-
   <div class="container text-white">
     <section class="chat-cards-section blue-whale-alpha" :class="{ 'empty': chatStore.chats.length == 0 }">
       <div v-if="chatStore.chats.length == 0">
@@ -187,7 +187,6 @@ const login = () => {
     :chat="chat" :socket="socket" @click="console.log('oi')" />
 
   <Toast position="bottom-left" />
-
 </template>
 
 <style scoped>
