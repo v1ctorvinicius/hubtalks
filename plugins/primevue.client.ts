@@ -8,6 +8,7 @@ import InputText from "primevue/inputtext";
 import Checkbox from "primevue/checkbox";
 import FloatLabel from "primevue/floatlabel";
 import Toast from "primevue/toast";
+import ToastService from "primevue/toastservice";
 import ButtonGroup from "primevue/buttongroup";
 import Dialog from "primevue/dialog";
 
@@ -22,4 +23,5 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Toast", Toast);
   nuxtApp.vueApp.component("ButtonGroup", ButtonGroup);
   nuxtApp.vueApp.component("Dialog", Dialog);
+  nuxtApp.vueApp.use(ToastService); 
 });

@@ -12,8 +12,6 @@ import type Chat from "~/types/chat";
 
 import io from "socket.io-client";
 
-
-
 const router = useRouter();
 const userStore = useUserStore();
 const chatStore = useChatStore();
@@ -21,7 +19,7 @@ const chatStore = useChatStore();
 const newChatName = ref("");
 const newChatPassword = ref("");
 const createChatLoading = ref(false);
-const isCreateChatModalVisible = ref(false);
+const createChatDialogVisible = ref(false);
 
 //TODO: this works?
 const isNewChatPasswordInvalid = computed(() => newChatPassword.value.length > 50);
@@ -37,7 +35,7 @@ const toastErrorNameTooLarge = ref();
 
 //TODO: cache
 onMounted(() => {
-  // chatStore.updateChats();
+  chatStore.updateChats();
   toastSuccess.value = useToast();
   toastError.value = useToast();
   toastErrorNameTooLarge.value = useToast();
@@ -72,7 +70,7 @@ const createChat = async () => {
     showSuccessToast();
     newChatName.value = "";
     newChatPassword.value = "";
-    changeCreateChatModalVisibility(false);
+    showCreateChatDialog(false);
   } catch (error) {
     console.error(error);
     createChatLoading.value = false;
@@ -88,19 +86,19 @@ const showErrorToast = (message: string) => {
   toastError.value.add({ severity: 'error', summary: 'Error', life: 0, detail: message });
 };
 
-function changeCreateChatModalVisibility(value?: boolean) {
-  if (value) {
-    isCreateChatModalVisible.value = !isCreateChatModalVisible.value;
+function showCreateChatDialog(value?: boolean) {
+  if (value == true) {
+    createChatDialogVisible.value = !createChatDialogVisible.value;
     return;
   }
-  isCreateChatModalVisible.value = value!;
+  createChatDialogVisible.value = value!;
 }
 
 function handleKeyboardKeydown(event: KeyboardEvent) {
   if (event.repeat) return;
   if (event.key === "Escape") {
-    if (isCreateChatModalVisible.value === true) {
-      changeCreateChatModalVisibility(false);
+    if (createChatDialogVisible.value === true) {
+      showCreateChatDialog(false);
       return;
     }
     chatStore.openChats = [];
@@ -108,7 +106,7 @@ function handleKeyboardKeydown(event: KeyboardEvent) {
 }
 
 function modalCreateChatCloseButtonHandler() {
-  changeCreateChatModalVisibility(false);
+  showCreateChatDialog(false);
   newChatName.value = "";
 }
 
@@ -143,14 +141,14 @@ const login = () => {
     <section class="chat-cards-section blue-whale-alpha" :class="{ 'empty': chatStore.chats.length == 0 }">
       <div v-if="chatStore.chats.length == 0">
         <h2>There are no chats 😐 </h2>
-        <Button @click="changeCreateChatModalVisibility(true)" label="new chat" icon="pi pi-plus" severity="success"
+        <Button @click="showCreateChatDialog(true)" label="new chat" icon="pi pi-plus" severity="success"
           style="width: 100%; margin-top: 10%;" />
       </div>
 
       <main v-else>
         <div class="menu card flex justify-content-center" style="margin-bottom: 2vh;">
           <ButtonGroup>
-            <Button icon="pi pi-plus" @click="changeCreateChatModalVisibility(true)" />
+            <Button icon="pi pi-plus" @click="showCreateChatDialog(true)" />
             <Button icon="pi pi-search" />
             <Button icon="pi pi-cog" />
           </ButtonGroup>
@@ -164,7 +162,7 @@ const login = () => {
   </div>
 
   <!-- modal for creating new chat -->
-  <Dialog dismissableMask :visible="isCreateChatModalVisible" modal header="Create new chat"
+  <Dialog dismissableMask :visible="createChatDialogVisible" modal header="Create new chat"
     :pt:mask:style="{ 'backdrop-filter': 'blur(5px)' }" :pt:title:style="'color:tomato;'"
     :pt:header:style="'color: white;'" :pt:closeButton:onClick="modalCreateChatCloseButtonHandler">
     <FloatLabel class="float-label">
