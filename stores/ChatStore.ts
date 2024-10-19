@@ -1,24 +1,20 @@
-import type Chat from "~/types/chat";
+import type Chat from "~/server/app/domain/models/Chat";
 import { defineStore } from "pinia";
 
 export const useChatStore = defineStore("chatStore", () => {
-  const config = useRuntimeConfig();
-  const apiBaseUrl = config.public.googleClientId;
-  const chats = ref<Chat[]>([]);
-  const openChats = ref<Chat[]>([]);
+  const chats: Chat[] = [];
+  const openChats: Chat[] = [];
 
   async function updateChats() {
     try {
-      const response = await $fetch<Chat[]>(`${apiBaseUrl}/chats/`);
-      const getAllChatsResponse = response;
-      const currentChats = chats.value;
-
+      const getAllChatsResponse = await $fetch<Chat[]>("api/chats/");
+      const currentChats = chats;
       const newChats = getAllChatsResponse.filter((chat) => {
         return !currentChats.some((currentChat) => currentChat.id === chat.id);
       });
 
       if (newChats.length > 0) {
-        chats.value.push(...newChats);
+        chats.push(...newChats);
       }
     } catch (error) {
       console.error("Erro ao obter dados:", error);
@@ -26,9 +22,9 @@ export const useChatStore = defineStore("chatStore", () => {
   }
 
   function closeChat(chat: Chat) {
-    const index = openChats.value.findIndex((c) => c.id === chat.id);
+    const index = openChats.findIndex((c) => c.id === chat.id);
     if (index !== -1) {
-      openChats.value.splice(index, 1);
+      openChats.splice(index, 1);
     }
   }
 
