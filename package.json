@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.5",
+    "@vueuse/core": "^11.1.0",
     "mongodb": "^6.9.0",
     "nuxt": "^3.13.0",
     "primeicons": "^7.0.0",
@@ -25,6 +26,8 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@types/uuid": "^10.0.0"
+    "@types/uuid": "^10.0.0",
+    "@vueuse/nuxt": "^10.11.1",
+    "nuxt": "npm:nuxt-nightly@latest"
   }
 }
