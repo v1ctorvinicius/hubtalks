@@ -1,30 +1,34 @@
 import Chat from "~/server/app/domain/models/Chat";
 import type ChatRepository from "~/server/app/domain/ports/out/ChatRepository";
 import MongoDbChatRepositoryImpl from "../../adapters/out/MongoDbChatRepositoryImpl";
+import { useWebSocket } from "@vueuse/core";
+
+const { status, data, send, open, close } = useWebSocket(
+  `ws://localhost:3000/api/websocket`
+);
+
 class ChatService {
   private repository: ChatRepository;
   constructor() {
     this.repository = new MongoDbChatRepositoryImpl();
   }
 
-  public async getChats() {
+  public async getAll() {
     return await this.repository.getChats();
   }
 
   public createChat(name: string, createdBy: string, password: string) {
-    // const chatStore = useChatStore();
     if (!name) name = "Chat " + this.chatCount();
-
-    // let newChat = new Chat(name, createdBy, password);
-    // chatStore.chats.push(newChat);
-    // io.emit("chatCreated", this._chats);
-    // console.log("chatService createChat - chatStore.chats", chatStore.chats);
-    return "newChat";
+    let newChat = Chat.create(name, createdBy, password);
+    this.repository.createChat(newChat);
+    send(JSON.stringify(newChat));
+    return newChat;
   }
 
-  private chatCount() {
-    // const chatStore = useChatStore();
-    // return chatStore.chats.length;
+  //TODO: use mongodb count
+  private async chatCount() {
+    const chats = await this.repository.getChats();
+    return chats?.length;
   }
 }
 

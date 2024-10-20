@@ -1,9 +1,12 @@
+import nuxtConfig from "~/nuxt.config";
 import Chat from "../../domain/models/Chat";
 import ChatRepository from "../../domain/ports/out/ChatRepository";
 import { Document, MongoClient, ServerApiVersion, WithId } from "mongodb";
 
-const uri =
-  "mongodb+srv://desen:F1pmpOhuL7KeQrH6@hubtalks.0jrzj.mongodb.net/?retryWrites=true&w=majority&appName=hubtalks";
+const config = useRuntimeConfig();
+const MONGODB_PASSWORD = config.public.mongodbPassword;
+
+const uri = `mongodb+srv://desen:${MONGODB_PASSWORD}@hubtalks.0jrzj.mongodb.net/?retryWrites=true&w=majority&appName=hubtalks`;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -14,6 +17,19 @@ const client = new MongoClient(uri, {
 });
 
 export default class MongoDbChatRepositoryImpl implements ChatRepository {
+  async createChat(chat: Chat): Promise<void> {
+    try {
+      await client.connect();
+      const db = client.db("desen");
+      const collection = db.collection("chat");
+      await collection.insertOne(chat);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      client.close();
+    }
+  }
+
   async getChats(): Promise<Chat[] | undefined> {
     try {
       await client.connect();
